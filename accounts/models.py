@@ -6,3 +6,4 @@ class CustomUser(AbstractUser):
     """Custom user model with unique email"""
 
     email = models.EmailField(unique=True)
+        

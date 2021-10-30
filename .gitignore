@@ -5,3 +5,5 @@ htmlcov/
 .vscode*
 flake-report/
 .venv/
+__pycache__/
+*htmlcov/

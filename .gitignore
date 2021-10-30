@@ -7,3 +7,4 @@ flake-report/
 .venv/
 __pycache__/
 *htmlcov/
+*__pycache/

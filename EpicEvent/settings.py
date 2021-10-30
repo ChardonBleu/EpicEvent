@@ -81,7 +81,7 @@ DATABASES = {
         'USER': 'epicadmin1',
         'PASSWORD': 'cHirAt42*',
         'HOST': 'localhost',
-        'PORT':'4532',
+        'PORT':'5432',
     }
 }
 

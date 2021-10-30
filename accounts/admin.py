@@ -15,10 +15,11 @@ class CustomUserAdmin(UserAdmin):
         UserAdmin {[type]} -- [description]
     """
     list_display = ('id', 'upper_username',
-                    'is_superuser', 'is_active', 'email')
+                    'is_superuser', 'is_active', 'email',)
+    list_display_links = ('id', 'upper_username',)
     empty_value_display = "Inconnu"
     search = ('username')
-    list_filter = ('is_superuser', 'is_active', 'groups')
+    list_filter = ('is_superuser', 'is_active', 'groups',)
     list_editable = ('is_active',)
 
     @admin.display(description='Username')

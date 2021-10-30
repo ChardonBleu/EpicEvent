@@ -18,7 +18,7 @@ class CustomUserAdmin(UserAdmin):
                     'is_superuser', 'is_active', 'email',)
     list_display_links = ('id', 'upper_username',)
     empty_value_display = "Inconnu"
-    search = ('username')
+    search_fields = ('username',)
     list_filter = ('is_superuser', 'is_active', 'groups',)
     list_editable = ('is_active',)
 

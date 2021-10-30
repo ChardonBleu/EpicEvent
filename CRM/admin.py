@@ -1,22 +1,29 @@
 from django.contrib import admin
 
-from .models import Custumer
+from .models import Custumer, Contract
 
 
 @admin.register(Custumer)
 class CustumerAdmin(admin.ModelAdmin):
     """
-    Link a CustumUser to the Admin panel, ensuring the encryption of
-    passwords.
+    Link Custumers on admin panel with personnal display
 
-
-    Arguments:
-        UserAdmin {[type]} -- [description]
     """
     list_display = ('id', 'full_name', 'email', 'mobile', 
                     'datetime_created', 'datetime_updated')
     list_display_links = ('id', 'full_name',)
+    search_fields = ('last_name', 'first_name', 'datetime_created',)
     empty_value_display = "Inconnu"
-    search = ('first_name')
-    list_filter = ('sales_customuser',)
     
+
+@admin.register(Contract)
+class ContractAdmin(admin.ModelAdmin):
+    """
+    Link Contracts on admin panel with personnal display
+    """
+    list_display = ('id', 'description', 'datetime_created', 'status_sign',
+                    'amount', 'payment_due', 'datetime_updated')
+    list_display_links = ('id', 'description',)
+    empty_value_display = "Inconnu"
+    search_fields = ('datetime_created','payment_due')
+    list_filter = ('status_sign',)

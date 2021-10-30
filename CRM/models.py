@@ -3,64 +3,64 @@ from django.db import models
 from accounts.models import CustomUser
 
 
-class Client(models.Model):
-    """Represents clients, with or without signed contract.
-    Each client is related to a Custom User from Sale group.
+class Custumer(models.Model):
+    """Represents custumers, with or without signed contract.
+    Each custumer is related to a Custom User from Sale group.
 
     Arguments:
         models {[type]} -- [description]
     """
     first_name = models.CharField(
-        "client first name",
+        "custumer first name",
         max_length=25,
-        help_text=_("Each client has a first name with max 25 caracters."), 
+        help_text=_("Each custumer has a first name with max 25 caracters."), 
     )
     last_name = models.CharField(
-        "client last name",
+        "custumer last name",
         max_length=25,
-        help_text=_("Each client has a last name with max 25 caracters."), 
+        help_text=_("Each custumer has a last name with max 25 caracters."), 
     )
     email = models.EmailField(
-        "client email",
+        "custumer email",
         max_length=100,
-        help_text=_("Each client has an email with max 100 caracters."), 
+        help_text=_("Each custumer has an email with max 100 caracters."), 
     )
     phone = models.CharField(
-        "client phone number",
+        "custumer phone number",
         max_length=20,
-        help_text=_("Each client has a phone number with max 20 caracters."),
+        help_text=_("Each custumer has a phone number with max 20 caracters."),
         blank=True, 
     )
     mobile = models.CharField(
-        "client mobile phone number",
+        "custumer mobile phone number",
         max_length=20,
-        help_text=_("Each client has a mobile phone number with max 20 \
+        help_text=_("Each custumer has a mobile phone number with max 20 \
             caracters."),
     )
     company_name = models.CharField(
-        "client company name",
+        "custumer company name",
         max_length=250,
-        help_text=_("Company name client for professional clients with max \
+        help_text=_("Company name custumer for professional custumers with max \
             250 caracters."),
         blank=True,
     )
     datetime_created = models.DateTimeField(
-        "created datetime client case",
+        "created datetime custumer case",
         auto_now_add=True,
-        help_text=_("client creation datetime is automatically filled in."),        
+        help_text=_("custumer creation datetime is automatically filled in."),        
     )
     datetime_updated = models.DateTimeField(
-        "updated datetime client case",
+        "updated datetime custumer case",
         auto_now=True,
-        help_text=_("client update datetime is automatically filled in."),        
+        help_text=_("custumer update datetime is automatically filled in."),        
     )
     sales_customuser = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
         verbose_name="sales contact",
-        related_name='clients',
-        help_text=_("The admin team asign a salesperson to each client.\
-            this seller negotiates with the client for contracts sign"),
+        related_name='custumers',
+        help_text=_("The admin team asign a salesperson to each custumer.\
+            this seller negotiates with the custumer for contracts sign"),
     )
     
     class Meta:
@@ -71,5 +71,5 @@ class Client(models.Model):
 
     @property
     def full_name(self):
-        """return the client's full name"""
-        return "{} {}".format(self.first_name.upper(), self.last_name)
+        """return the custumer's full name"""
+        return "{} {}".format(self.first_name, self.last_name.upper())

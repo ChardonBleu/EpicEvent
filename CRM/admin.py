@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import Client
+from .models import Custumer
 
 
-@admin.register(Client)
-class ClientAdmin(admin.ModelAdmin):
+@admin.register(Custumer)
+class CustumerAdmin(admin.ModelAdmin):
     """
     Link a CustumUser to the Admin panel, ensuring the encryption of
     passwords.

@@ -1,0 +1,7 @@
+htmlcov/
+.pytest_cache/
+.coverage
+*__pycache__*
+.vscode*
+flake-report/
+.venv/

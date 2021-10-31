@@ -11,23 +11,23 @@ class Customer(models.Model):
     first_name = models.CharField(
         "Prénom client",
         max_length=25,
-        help_text=_("Each customer has a first name with max 25 caracters."), 
+        help_text=_("Each customer has a first name with max 25 caracters."),
     )
     last_name = models.CharField(
         "Nom de famille client",
         max_length=25,
-        help_text=_("Each customer has a last name with max 25 caracters."), 
+        help_text=_("Each customer has a last name with max 25 caracters.")
     )
     email = models.EmailField(
         "email client",
         max_length=100,
-        help_text=_("Each customer has an email with max 100 caracters."), 
+        help_text=_("Each customer has an email with max 100 caracters."),
     )
     phone = models.CharField(
         "Téléphone fixe client",
         max_length=20,
         help_text=_("Each customer has a phone number with max 20 caracters."),
-        blank=True, 
+        blank=True,
     )
     mobile = models.CharField(
         "Téléphone mobile client",
@@ -45,12 +45,12 @@ class Customer(models.Model):
     datetime_created = models.DateTimeField(
         "Date création client",
         auto_now_add=True,
-        help_text=_("custumer creation datetime is automatically filled in."),        
+        help_text=_("custumer creation datetime is automatically filled in."),
     )
     datetime_updated = models.DateTimeField(
         "Date mise à jour client",
         auto_now=True,
-        help_text=_("custumer update datetime is automatically filled in."),        
+        help_text=_("custumer update datetime is automatically filled in."),
     )
     sales_customuser = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -60,11 +60,11 @@ class Customer(models.Model):
         help_text=_("The admin team asign a salesperson to each customer.\
             this seller negotiates with the customer for contracts sign"),
     )
-    
+
     class Meta:
         ordering = ['last_name', 'first_name']
-        verbose_name_plural=_("Clients")
-    
+        verbose_name_plural = _("Clients")
+
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
 
@@ -82,17 +82,17 @@ class Contract(models.Model):
     datetime_created = models.DateTimeField(
         "Date création contrat",
         auto_now_add=True,
-        help_text=_("contract creation datetime is automatically filled in."),        
+        help_text=_("contract creation datetime is automatically filled in."),
     )
     datetime_updated = models.DateTimeField(
         "Date mise à jour contrat",
         auto_now=True,
-        help_text=_("contract update datetime is automatically filled in."),        
+        help_text=_("contract update datetime is automatically filled in."),
     )
     status_sign = models.BooleanField(
         "Signature contrat",
         default=False,
-        help_text=_("Has to pass on True when contract is signed"), 
+        help_text=_("Has to pass on True when contract is signed"),
     )
     amount = models.DecimalField(
         "Montant du contrat",
@@ -119,14 +119,14 @@ class Contract(models.Model):
         help_text=_("The admin team asign a salesperson to each customer.\
             this seller negotiates with the customer for contracts sign"),
     )
-    
+
     class Meta:
         ordering = ['customer', '-datetime_created']
-        verbose_name_plural=_("Contrats")
-    
+        verbose_name_plural = _("Contrats")
+
     def __str__(self):
         return "Contracté pour {} - {} $".format(self.customer, self.amount)
-    
+
     @property
     def description(self):
         """return a short dercription of contract"""
@@ -144,7 +144,7 @@ class EventStatus(models.Model):
     )
 
     class Meta:
-        verbose_name_plural=_("Status évènements")
+        verbose_name_plural = _("Status évènements")
 
     def __str__(self):
         return "{}".format(self.status)
@@ -158,12 +158,12 @@ class Event(models.Model):
     datetime_created = models.DateTimeField(
         "Date création évènement",
         auto_now_add=True,
-        help_text=_("event creation datetime is automatically filled in."),        
+        help_text=_("event creation datetime is automatically filled in."),
     )
     datetime_updated = models.DateTimeField(
         "Date mise à jour évènement",
         auto_now=True,
-        help_text=_("event update datetime is automatically filled in."),        
+        help_text=_("event update datetime is automatically filled in."),
     )
     attendees = models.IntegerField(
         "Nombre convives",
@@ -206,15 +206,14 @@ class Event(models.Model):
             '2: En cours' or '3: Terminé'"),
     )
 
-
     class Meta:
         ordering = ['event_status', 'event_date']
-        verbose_name_plural=_("Evènements")
+        verbose_name_plural = _("Evènements")
 
     def __str__(self):
         return "Evènement commandé par {} - suivi par {}".format(
             self.customer, self.support_customuser)
-    
+
     @property
     def description(self):
         """return a short description of event"""

@@ -139,8 +139,8 @@ class EventStatus(models.Model):
     status = models.CharField(
         "Status évènement",
         max_length=250,
-        help_text=_("Pour choix du statut de l'évènement. Contient trois choix\
-            possibels: En préparation, En cours, Terminé"),
+        help_text=_("For event status choice. Three choices\
+            possibles: En préparation, En cours, Terminé"),
     )
 
     class Meta:

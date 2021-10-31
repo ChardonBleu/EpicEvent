@@ -168,6 +168,7 @@ class Event(models.Model):
     attendees = models.IntegerField(
         "Nombre convives",
         validators=[MinValueValidator(0)],
+        null=True,
         blank=True,
         help_text=_("number of attendees. Must be positive integer"),
     )
@@ -192,6 +193,8 @@ class Event(models.Model):
     support_customuser = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         verbose_name="Contact support",
         related_name='events',
         help_text=_("The admin team asign a support person to each customer.\
@@ -202,6 +205,7 @@ class Event(models.Model):
         on_delete=models.CASCADE,
         verbose_name="status évènement",
         related_name='events',
+        default="1",
         help_text=_("Each event has a status: '1: En préparation',\
             '2: En cours' or '3: Terminé'"),
     )
@@ -219,3 +223,13 @@ class Event(models.Model):
         """return a short description of event"""
         return "Evènement commandé par {} - suivi par {} - {} ".format(
             self.customer, self.support_customuser, self.event_status)
+        
+    @property
+    def has_support(self):
+        """Return True is event has support
+        """
+        if self.support_customuser == None:
+            return False
+        else:
+            return True
+        

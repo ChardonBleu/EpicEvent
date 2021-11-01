@@ -15,8 +15,15 @@ class CustomUserAdmin(UserAdmin):
     list_display_links = ('id', 'upper_username',)
     empty_value_display = "Inconnu"
     search_fields = ('username',)
-    list_filter = ('is_superuser', 'is_active', 'groups', 'role',)
+    list_filter = ('is_superuser', 'is_active', 'groups',)
     list_editable = ('is_active', 'role',)
+    fieldsets = (
+        (None, {
+            "fields": ('username', 'password', 'email', 'is_superuser',
+                       'is_active', 'role', 'groups'),
+            }),
+        )
+
 
     @admin.display(description='Username')
     def upper_username(self, obj):

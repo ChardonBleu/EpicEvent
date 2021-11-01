@@ -11,9 +11,13 @@ class CustomUser(AbstractUser):
         
     @property
     def user_role(self):
-        if self.groups.filter(name='sale').exists():
+        is_in_sale_goup = self.groups.filter(name='sale').exists()
+        is_in_support_group = self.groups.filter(name='support').exists()
+        if is_in_sale_goup and is_in_support_group:
+            return 'ERROR'
+        elif is_in_sale_goup:
             return 'SALE'
-        elif self.groups.filter(name='support').exists():
+        elif is_in_support_group:
             return 'SUPPORT'
         if self.is_superuser:
             return 'ADMIN'

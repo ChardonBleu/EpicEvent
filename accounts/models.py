@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import AbstractUser, Group
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -20,7 +20,6 @@ class CustomUser(AbstractUser):
         elif is_in_sale_goup:
             return 'SALE'
         elif is_in_support_group:
-            return 'SUPPORT'
-       
+            return 'SUPPORT'       
         else:
-            return None
+            return 'Inconnu'

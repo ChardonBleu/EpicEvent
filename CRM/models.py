@@ -223,13 +223,12 @@ class Event(models.Model):
         """return a short description of event"""
         return "Evènement commandé par {} - suivi par {} - {} ".format(
             self.customer, self.support_customuser, self.event_status)
-        
+
     @property
     def has_support(self):
         """Return True is event has support
         """
-        if self.support_customuser == None:
+        if self.support_customuser is None:
             return False
         else:
             return True
-        

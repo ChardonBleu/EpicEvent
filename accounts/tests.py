@@ -44,9 +44,9 @@ def support_group(db):
 @pytest.fixture
 def user_in_sale_group(db, sale_group):
     sale_user = CustomUser.objects.create(username="sale1",
-                                     password='sale1passtest',
-                                     email="sale1@soleneidos.fr",
-                                     is_superuser=False)
+                                          password='sale1passtest',
+                                          email="sale1@soleneidos.fr",
+                                          is_superuser=False)
     sale_user.groups.add(sale_group)
     return sale_user
 
@@ -64,9 +64,9 @@ def user_in_support_group(db, support_group):
 @pytest.fixture
 def user_in_two_groups(db, support_group, sale_group):
     error_user = CustomUser.objects.create(username="support1",
-                                             password='support1passtest',
-                                             email="support1@soleneidos.fr",
-                                             is_superuser=False)
+                                           password='support1passtest',
+                                           email="support1@soleneidos.fr",
+                                           is_superuser=False)
     error_user.groups.add(support_group)
     error_user.groups.add(sale_group)
     return error_user

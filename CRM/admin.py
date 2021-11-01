@@ -48,8 +48,8 @@ class EventAdmin(admin.ModelAdmin):
     """
     Link Events on admin panel with personnal display
     """
-    list_display = ('id', 'description', 'has_support', 'datetime_created', 'attendees',
-                    'event_date', 'notes',)
+    list_display = ('id', 'description', 'has_support', 'datetime_created',
+                    'attendees', 'event_date', 'notes',)
     list_display_links = ('id', 'description',)
     empty_value_display = "Inconnu"
     search_fields = ('datetime_created', 'customer__last_name',

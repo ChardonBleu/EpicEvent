@@ -24,7 +24,6 @@ class CustomUserAdmin(UserAdmin):
             }),
         )
 
-
     @admin.display(description='Username')
     def upper_username(self, obj):
         return(obj.username.upper())

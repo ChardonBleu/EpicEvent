@@ -60,7 +60,7 @@ def event1(db, customer1: Customer, support1: CustomUser,
 
 @pytest.fixture
 def event_without_support(db, customer1: Customer, support1: CustomUser,
-           event_status1: EventStatus):
+                          event_status1: EventStatus):
     return Event.objects.create(attendees="200",
                                 customer=customer1,
                                 event_status=event_status1)
@@ -101,8 +101,8 @@ suivi par support1 - En prépa "
 
 
 def test_event_has_support(event1: Event):
-    assert event1.has_support == True
+    assert event1.has_support is True
 
 
 def test_event_has_not_support(event_without_support: Event):
-    assert event_without_support.has_support == False
+    assert event_without_support.has_support is False

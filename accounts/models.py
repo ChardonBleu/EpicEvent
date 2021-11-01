@@ -42,12 +42,14 @@ class CustomUser(AbstractUser):
         super().save(*args, **kwargs)
         print("*****", self.username, self.role)
         if self.role == 'SALE':
+            print("**", self.username, self.role)
             sale_group = Group.objects.get(name='sale')
             print("**", sale_group)
             self.groups.add(sale_group)
         elif self.role == 'SUPPORT':
+            print("*", self.username, self.role)
             support_group = Group.objects.get(name='support')
-            print("**", support_group)
+            print("*", support_group)
             self.groups.add(support_group)
         
     

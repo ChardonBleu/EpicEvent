@@ -58,8 +58,16 @@ def event1(db, customer1: Customer, support1: CustomUser,
                                 event_status=event_status1)
 
 
+@pytest.fixture
+def event_without_support(db, customer1: Customer, support1: CustomUser,
+           event_status1: EventStatus):
+    return Event.objects.create(attendees="200",
+                                customer=customer1,
+                                event_status=event_status1)
+
+
 # ############################################################# #
-# ####################  TEST STR and @property models   ##################### #
+# #############  TEST STR and @property models   ############## #
 
 
 def test_str_customer(customer1: Customer):
@@ -90,3 +98,11 @@ par support1"
 def test_description_event(event1: Event):
     assert event1.description == "Evènement commandé par Lulu Lefetard - \
 suivi par support1 - En prépa "
+
+
+def test_event_has_support(event1: Event):
+    assert event1.has_support == True
+
+
+def test_event_has_not_support(event_without_support: Event):
+    assert event_without_support.has_support == False

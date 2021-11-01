@@ -6,7 +6,7 @@ from django.db import migrations
 def create_groups(apps, schema_migration):
     Group = apps.get_model('auth', 'Group')
     Permission = apps.get_model('auth', 'Permission')
-    
+
     view_customer = Permission.objects.get(codename='view_customer')
     view_contract = Permission.objects.get(codename='view_contract')
     view_event = Permission.objects.get(codename='view_event')
@@ -44,7 +44,7 @@ def create_groups(apps, schema_migration):
     support = Group(name='support')
     support.save()
     support.permissions.set(support_permissions)
-    
+
 class Migration(migrations.Migration):
 
     dependencies = [

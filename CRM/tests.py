@@ -1,5 +1,5 @@
 import pytest
-from django.test import Client
+from rest_framework.test import APIClient
 
 from CRM.models import Customer, Contract, EventStatus, Event
 from accounts.models import CustomUser
@@ -10,7 +10,7 @@ from accounts.models import CustomUser
 
 @pytest.fixture
 def client(db):
-    return Client()
+    return APIClient()
 
 
 @pytest.fixture
@@ -106,3 +106,4 @@ def test_event_has_support(event1: Event):
 
 def test_event_has_not_support(event_without_support: Event):
     assert event_without_support.has_support is False
+

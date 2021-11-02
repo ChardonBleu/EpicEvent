@@ -108,7 +108,7 @@ class Contract(models.Model):
         Customer,
         on_delete=models.CASCADE,
         verbose_name="customer",
-        related_name="contracts_custumer",
+        related_name="contracts_customer",
         help_text=_("Each contract is related to a customer"),
     )
     sales_customuser = models.ForeignKey(

@@ -33,14 +33,14 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class CustomerSerializer(serializers.ModelSerializer):
-    sales_costumuser = serializers.SlugRelatedField(read_only=True,
+    sales_customuser = serializers.SlugRelatedField(read_only=True,
                                                slug_field='username')
-    contracts_costumer = StringRelatedField(many=True, read_only=True)
+    contracts_customer = StringRelatedField(many=True, read_only=True)
     events_customer = StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Customer
-        fields = ['id', 'first_name', 'last_name', 'eamil', 'phone',
+        fields = ['id', 'first_name', 'last_name', 'email', 'phone',
                   'mobile', 'company_name', 'datetime_created',
-                  'datetime_updated', 'sales_costumuser', 'contracts_costumer',
+                  'datetime_updated', 'sales_customuser', 'contracts_customer',
                   'events_customer']

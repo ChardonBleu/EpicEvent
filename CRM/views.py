@@ -1,9 +1,11 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
-from CRM.models import Customer
-from CRM.serializers import CustomerSerializer
+from CRM.models import Customer, Contract
+from CRM.serializers import CustomerDetailSerializer, CustomerListSerializer, ContractSerializer
+from CRM.serializers import ContractSerializer
 
+from CRM.permissions import CanAddOrUpdateCustomer
     
 class CustomerViewSet(viewsets.ModelViewSet):
     """
@@ -13,7 +15,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
     The EpicEvent API is a RESTful API built using Django Rest Framework. It's
     part of project 12 of Openclassrooms formation Pyhton Developpers.
 
-        You need to be authenticated to see customers list.
+    You need to be authenticated to see customers list.
 
     Adlmin team manage users with django admin panel.
     Every user can login with username and password for the first login.
@@ -25,9 +27,33 @@ class CustomerViewSet(viewsets.ModelViewSet):
     events lists.
 
     """
-    serializer_class = CustomerSerializer
-    permission_classes = [IsAuthenticated]
-    queryset = Customer.objects.all()
+    
+    permission_classes = [IsAuthenticated, CanAddOrUpdateCustomer]    
+      
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return CustomerListSerializer
+        else:
+            return CustomerDetailSerializer
+
+
+    def get_queryset(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            return Customer.objects.all()
+        else:
+            return Customer.objects.filter(sales_customuser=self.request.user)
+
+
+class ContractViewSet(viewsets.ModelViewSet):
+    """
+    When user from sale group create a contract he does it for one of his
+    clients. When creating contracts, the sale_customuser field is filled on
+    with logged user.    
+
+    """
+    serializer_class = ContractSerializer
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
+    queryset = Contract.objects.all()
     
 
     def perform_create(self, serializer):

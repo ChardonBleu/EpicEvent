@@ -288,7 +288,7 @@ def test_get_contracts_list_for_sale_group(client, logged_vendeur1,
     response = client.get('/contracts/')
     assert response.status_code == 200
 
-def test_get_customer_list_for_support_group(client, logged_support1,
+def test_get_contracts_list_for_support_group(client, logged_support1,
                                              contract1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.get('/contracts/')
@@ -338,4 +338,74 @@ def test_partial_update_contract_detail(client, logged_vendeur1, contract1):
 def test_CANT_delete_contract(client, logged_vendeur1, contract1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.delete('/contracts/' + str(contract1.id) +'/')
+    assert response.status_code == 403
+
+
+# ############################################################################
+# #############################  Tests EVENTS  ###############################
+# ############################################################################
+
+
+def test_get_events_list_for_sale_group(client, logged_vendeur1,
+                                             event1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
+    response = client.get('/events/')
+    assert response.status_code == 200
+
+def test_get_events_list_for_support_group(client, logged_support1,
+                                             event1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
+    response = client.get('/events/')
+    assert response.status_code == 200
+
+def test_sale_user_can_post_new_event(client, logged_vendeur1,
+                                              customer1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
+    response = client.post('/events/',
+                           {'attendees': '160',
+                            'event_date': "2022-02-12",
+                            'notes': 'event test',
+                            'customer': customer1.id}, format='json')
+    assert response.status_code == 201
+
+def test_support_not_authorized_to_post_new_contract(client,
+                                                    logged_support1,
+                                                    customer1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
+    response = client.post('/events/',
+                           {'attendees': '160',
+                            'event_date': "2022-02-12",
+                            'notes': 'event test',
+                            'customer': customer1.id}, format='json')
+    assert response.status_code == 403
+
+def test_sale_user_can_view_event_detail(client, logged_vendeur1, event1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
+    response = client.get('/events/' + str(event1.id) +'/')
+    assert response.status_code == 200
+
+def test_support_user_can_view_event_detail(client, logged_support1, event1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
+    response = client.get('/events/' + str(event1.id) +'/')
+    assert response.status_code == 200
+
+def test_update_contract_detail(client, logged_support1,
+                                   event1, customer1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
+    response = client.put('/events/' + str(event1.id) +'/',
+                           {'attendees': 200,
+                            'event_status': 2,
+                            'customer': customer1.id}, format='json')
+    assert response.status_code == 200
+    
+
+def test_partial_update_contract_detail(client, logged_support1, event1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
+    response = client.patch('/events/' + str(event1.id) +'/',
+                            {'event_status': 3}, format='json')
+    assert response.status_code == 200
+
+def test_CANT_delete_contract(client, logged_support1, event1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
+    response = client.delete('/events/' + str(event1.id) +'/')
     assert response.status_code == 403

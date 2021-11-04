@@ -5,7 +5,7 @@ from CRM.models import Customer, Contract
 from CRM.serializers import CustomerDetailSerializer, CustomerListSerializer, ContractSerializer
 from CRM.serializers import ContractSerializer
 
-from CRM.permissions import CanAddOrUpdateCustomer
+from CRM.permissions import CanManageCustomer, CanManageContract
     
 class CustomerViewSet(viewsets.ModelViewSet):
     """
@@ -28,7 +28,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
 
     """
     
-    permission_classes = [IsAuthenticated, CanAddOrUpdateCustomer]    
+    permission_classes = [IsAuthenticated, CanManageCustomer]    
       
     def get_serializer_class(self):
         if self.action == 'list':
@@ -52,12 +52,13 @@ class ContractViewSet(viewsets.ModelViewSet):
 
     """
     serializer_class = ContractSerializer
-    permission_classes = [IsAuthenticated, DjangoModelPermissions]
+    permission_classes = [IsAuthenticated, CanManageContract]
     queryset = Contract.objects.all()
     
 
     def perform_create(self, serializer):
-        """The author is automaticaly saved as the authenticated user
+        """The user from sale group is automaticaly saved as the
+        sale_customuser
 
         Arguments:
             serializer  -- ProjectSerializer

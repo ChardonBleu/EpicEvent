@@ -4,20 +4,18 @@ from CRM.models import Customer, Contract, Event
 
 
 class ContractSerializer(serializers.ModelSerializer):
-    costumer = serializers.SlugRelatedField(read_only=True,
-                                               slug_field='full_name')
+    
     sales_customuser = serializers.SlugRelatedField(read_only=True,
                                                slug_field='username')
 
     class Meta:
         model = Contract
         fields = ['id', 'datetime_created', 'datetime_updated', 'status_sign',
-                  'amount', 'payment_due', 'costumer', 'sales_customuser']
+                  'amount', 'payment_due', 'customer', 'sales_customuser']
 
 
 class EventSerializer(serializers.ModelSerializer):
-    customer = serializers.SlugRelatedField(read_only=True,
-                                               slug_field='full_name')
+
     support_customuser = serializers.SlugRelatedField(read_only=True,
                                                slug_field='username')
     event_status = serializers.SlugRelatedField(read_only=True,

@@ -211,8 +211,10 @@ class Event(models.Model):
         EventStatus,
         on_delete=models.CASCADE,
         verbose_name="status évènement",
-        related_name='events',
-        default="1",
+        related_name='events_eventstatus',
+        null=True,
+        blank=True,
+        default=8,
         help_text=_("Each event has a status: '1: En préparation',\
             '2: En cours' or '3: Terminé'"),
     )

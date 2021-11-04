@@ -359,16 +359,17 @@ def test_get_events_list_for_support_group(client, logged_support1,
     assert response.status_code == 200
 
 def test_sale_user_can_post_new_event(client, logged_vendeur1,
-                                              customer1):
+                                    customer1, event_status1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.post('/events/',
                            {'attendees': '160',
                             'event_date': "2022-02-12",
                             'notes': 'event test',
+                            'event_status': event_status1.id,
                             'customer': customer1.id}, format='json')
     assert response.status_code == 201
 
-def test_support_not_authorized_to_post_new_contract(client,
+def test_support_not_authorized_to_post_new_event(client,
                                                     logged_support1,
                                                     customer1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
@@ -389,23 +390,24 @@ def test_support_user_can_view_event_detail(client, logged_support1, event1):
     response = client.get('/events/' + str(event1.id) +'/')
     assert response.status_code == 200
 
-def test_update_contract_detail(client, logged_support1,
-                                   event1, customer1):
+def test_update_event_detail(client, logged_support1,
+                                   event1, customer1,
+                                   event_status1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.put('/events/' + str(event1.id) +'/',
                            {'attendees': 200,
-                            'event_status': 2,
+                            'event_status': event_status1.id,
                             'customer': customer1.id}, format='json')
     assert response.status_code == 200
     
 
-def test_partial_update_contract_detail(client, logged_support1, event1):
+def test_partial_update_event_detail(client, logged_support1, event1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.patch('/events/' + str(event1.id) +'/',
-                            {'event_status': 3}, format='json')
+                            {'notes': 'new notes'}, format='json')
     assert response.status_code == 200
 
-def test_CANT_delete_contract(client, logged_support1, event1):
+def test_CANT_delete_event(client, logged_support1, event1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.delete('/events/' + str(event1.id) +'/')
     assert response.status_code == 403

@@ -1,12 +1,14 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 
-from CRM.models import Customer, Contract
-from CRM.serializers import CustomerDetailSerializer, CustomerListSerializer, ContractSerializer
-from CRM.serializers import ContractSerializer
+from CRM.models import Customer, Contract, Event
+from CRM.serializers import CustomerDetailSerializer, CustomerListSerializer
+from CRM.serializers import ContractSerializer, EventSerializer
 
 from CRM.permissions import CanManageCustomer, CanManageContract
-    
+from CRM.permissions import CanManageEvent
+
+
 class CustomerViewSet(viewsets.ModelViewSet):
     """
     The endpoint [customers list](/customers/) is the main entry point of the
@@ -58,9 +60,19 @@ class ContractViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """The user from sale group is automaticaly saved as the
-        sale_customuser
+        sale_customuser.
 
         Arguments:
             serializer  -- ProjectSerializer
         """
         serializer.save(sales_customuser=self.request.user)
+
+class EventViewSet(viewsets.ModelViewSet):
+    """
+    When user from sale group create an event he does it for one of his
+    clients. Then admin user gives a support user on event using admin panel.
+
+    """
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated, CanManageEvent]
+    queryset = Event.objects.all()

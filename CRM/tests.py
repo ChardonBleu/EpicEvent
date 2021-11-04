@@ -126,19 +126,19 @@ def event_without_support(db, customer1: Customer, support1: CustomUser,
 # #############  TEST STR and @property models   ############## #
 
 
-def test_str_customer(customer1: Customer):
+def test_str_customer_1(customer1: Customer):
     assert str(customer1) == "Lulu Lefetard"
 
 
-def test_full_name(customer1: Customer):
+def test_full_name_2(customer1: Customer):
     assert customer1.full_name == "Lulu LEFETARD"
 
 
-def test_str_contact(contract1: Contract):
+def test_str_contact_3(contract1: Contract):
     assert str(contract1) == "Contracté pour Lulu Lefetard - 10250.50 $"
 
 
-def test_description_contract(contract1: Contract):
+def test_description_contract_4(contract1: Contract):
     assert contract1.description == "Contracté pour Lulu Lefetard"
 
 
@@ -146,21 +146,21 @@ def test_event_status(event_status1: EventStatus):
     assert str(event_status1) == "En prépa"
 
 
-def test_event(event1: Event):
+def test_event_5(event1: Event):
     assert str(event1) == "Evènement commandé par Lulu Lefetard - suivi \
 par support1"
 
 
-def test_description_event(event1: Event):
+def test_description_event_6(event1: Event):
     assert event1.description == "Evènement commandé par Lulu Lefetard - \
 suivi par support1 - En prépa "
 
 
-def test_event_has_support(event1: Event):
+def test_event_has_support_7(event1: Event):
     assert event1.has_support is True
 
 
-def test_event_has_not_support(event_without_support: Event):
+def test_event_has_not_support_8(event_without_support: Event):
     assert event_without_support.has_support is False
 
 # ############################################################################
@@ -168,65 +168,128 @@ def test_event_has_not_support(event_without_support: Event):
 # ############################################################################
 
 
-def test_get_customer_list_for_sale_group(client, logged_vendeur1,
-                                          customer1, customer2):
+def test_get_customer_list_for_sale_group_9_10(client, logged_vendeur1,
+                                               customer1, customer2):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.get('/customers/')
     assert response.status_code == 200
     assert b'Jojo' in response.content
     assert b'Lulu' in response.content
 
-def test_get_customer_list_for_support_group(client, logged_support1,
-                                             customer1, customer2):
+def test_get_customer_list_for_support_group_10_12(client, logged_support1,
+                                                   customer1, customer2):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.get('/customers/')
     assert response.status_code == 200
     assert b'Jojo' in response.content
     assert b'Lulu' in response.content 
 
-def test_sale_user_can_post_new_costumer(client, logged_vendeur1):
+def test_sale_user_can_post_new_costumer_13(client, logged_vendeur1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.post('/customers/',
-                        {'first_name': "Toto",
-                         'last_name': "Lerigolo",
-                         'email': "toto@soleneidos.fr",
-                         'mobile': "123456789"}, format='json')
+                           {'first_name': "Toto",
+                            'last_name': "Lerigolo",
+                            'email': "toto@soleneidos.fr",
+                            'mobile': "123456789"}, format='json')
     assert response.status_code == 201
 
 def test_support_not_authorized_to_post_new_costumer(client, logged_support1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.post('/customers/',
-                        {'first_name': "Toto",
-                         'last_name': "Lerigolo",
-                         'email': "toto@soleneidos.fr",
-                         'mobile': "123456789"}, format='json')    
+                           {'first_name': "Toto",
+                            'last_name': "Lerigolo",
+                            'email': "toto@soleneidos.fr",
+                            'mobile': "123456789"}, format='json')
     assert response.status_code == 403
     
-def test_view_costumer_detail(client, logged_vendeur1, customer1):
+def test_view_costumer_detail_14(client, logged_vendeur1, customer1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.get('/customers/14/')
     assert response.status_code == 200
 
-def test_update_costumer_detail(client, logged_vendeur1, customer1):
+def test_update_costumer_detail_15(client, logged_vendeur1, customer1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.put('/customers/15/',
-                        {'first_name': "Lolo",
-                         'last_name': "Lefetard",
-                         'email': "lulumodif@soleneidos.fr",
-                         'phone': ' ',
-                         'mobile': "123456789",
-                         'company_name': ' ',
-                         }, format='json')
+                          {'first_name': "Lolo",
+                           'last_name': "Lefetard",
+                           'email': "lulumodif@soleneidos.fr",
+                           'phone': ' ',
+                           'mobile': "123456789",
+                           'company_name': ' '}, format='json')
     assert response.status_code == 200
 
-def test_partial_update_costumer_detail(client, logged_vendeur1, customer1):
+def test_partial_update_costumer_detail_16(client, logged_vendeur1, customer1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.patch('/customers/16/',
-                        {'email': "lulumodif@soleneidos.fr"}, format='json')
+                            {'email': "lulumodif@soleneidos.fr"}, format='json')
     assert response.status_code == 200
 
 
-def test_delete_costumer(client, logged_vendeur1, customer1):
+def test_delete_costumer_17(client, logged_vendeur1, customer1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.delete('/customers/17/')
+    assert response.status_code == 204
+
+
+# ############################################################################
+# ###########################  Tests CONTRACTS  ##############################
+# ############################################################################
+
+
+def test_get_contracts_list_for_sale_group_3(client, logged_vendeur1,
+                                             contract1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
+    response = client.get('/contracts/')
+    assert response.status_code == 200
+
+def test_get_customer_list_for_support_group(client, logged_support1,
+                                             contract1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
+    response = client.get('/contracts/')
+    assert response.status_code == 404
+
+def test_sale_user_can_post_new_contract_4_18(client, logged_vendeur1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
+    response = client.post('/contracts/',
+                           {'status_sign': False,
+                            'amount': "10$",
+                            'payment_due': "2022-03-20",
+                            'customer': 18}, format='json')
+    assert response.status_code == 201
+
+def test_support_not_authorized_to_post_new_cotract(client,
+                                                    logged_support1,
+                                                    customer1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
+    response = client.post('/contracts/',
+                           {'status_sign': False,
+                            'amount': "10 $",
+                            'payment_due': "2022-03-20",
+                            'customer': 19}, format='json')
+    assert response.status_code == 403
+
+def test_view_contract_detail_5(client, logged_vendeur1, contract1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
+    response = client.get('/contracts/5/')
+    assert response.status_code == 200
+
+def test_update_contract_detail_6(client, logged_vendeur1,
+                                   contract1, costumer1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
+    response = client.put('/contracts/6/',
+                           {'status_sign': True,
+                            'amount': "'10250.50'",
+                            'payment_due': "2022-01-20",
+                            'customer': 20}, format='json')
+    assert response.status_code == 200
+
+def test_partial_update_contract_detail_7(client, logged_vendeur1, contract1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
+    response = client.patch('/contracts/7/',
+                            {'status_sign': True,}, format='json')
+    assert response.status_code == 200
+
+def test_delete_contract_8(client, logged_vendeur1, contract1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
+    response = client.delete('/contracts/8/')
     assert response.status_code == 204

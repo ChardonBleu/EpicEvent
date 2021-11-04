@@ -10,7 +10,7 @@ class Customer(models.Model):
     Each customer is related to a Custom User from Sale group.
     User from sale group can create potentials clients, without sale_customuser.
     User from admin group (superuser) attribute sale_costumer to client,
-    converting potential client in active client.
+    converting potential client in active client.customer
     """
     
     first_name = models.CharField(

@@ -5,8 +5,7 @@ from CRM.models import Customer, Contract, Event
 from CRM.serializers import CustomerDetailSerializer, CustomerListSerializer
 from CRM.serializers import ContractSerializer, EventSerializer
 
-from CRM.permissions import CanManageCustomer, CanManageContract
-from CRM.permissions import CanManageEvent
+from CRM.permissions import CanManage
 
 
 class CustomerViewSet(viewsets.ModelViewSet):
@@ -30,7 +29,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
 
     """
     
-    permission_classes = [IsAuthenticated, CanManageCustomer]    
+    permission_classes = [IsAuthenticated, CanManage]    
       
     def get_serializer_class(self):
         if self.action == 'list':
@@ -54,7 +53,7 @@ class ContractViewSet(viewsets.ModelViewSet):
 
     """
     serializer_class = ContractSerializer
-    permission_classes = [IsAuthenticated, CanManageContract]
+    permission_classes = [IsAuthenticated, CanManage]
     queryset = Contract.objects.all()
     
 
@@ -74,5 +73,5 @@ class EventViewSet(viewsets.ModelViewSet):
 
     """
     serializer_class = EventSerializer
-    permission_classes = [IsAuthenticated, CanManageEvent]
+    permission_classes = [IsAuthenticated, CanManage]
     queryset = Event.objects.all()

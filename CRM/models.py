@@ -1,3 +1,4 @@
+import uuid
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -7,7 +8,11 @@ from django.conf import settings
 class Customer(models.Model):
     """Represents customers, with or without signed contract.
     Each customer is related to a Custom User from Sale group.
+    User from sale group can create potentials clients, without sale_customuser.
+    User from admin group (superuser) attribute sale_costumer to client,
+    converting potential client in active client.customer
     """
+    
     first_name = models.CharField(
         "Prénom client",
         max_length=25,
@@ -55,6 +60,8 @@ class Customer(models.Model):
     sales_customuser = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         verbose_name="Contact vendeur",
         related_name='custumers',
         help_text=_("The admin team asign a salesperson to each customer.\
@@ -108,7 +115,7 @@ class Contract(models.Model):
         Customer,
         on_delete=models.CASCADE,
         verbose_name="customer",
-        related_name="contracts_custumer",
+        related_name="contracts_customer",
         help_text=_("Each contract is related to a customer"),
     )
     sales_customuser = models.ForeignKey(
@@ -200,18 +207,19 @@ class Event(models.Model):
         help_text=_("The admin team asign a support person to each customer.\
             this supprt personn manage event oàrganisation with the customer"),
     )
-    event_status = models.ForeignKey(
+
+    status = models.ForeignKey(
         EventStatus,
         on_delete=models.CASCADE,
         verbose_name="status évènement",
-        related_name='events',
-        default="1",
+        related_name='status_events',
+        default=1,
         help_text=_("Each event has a status: '1: En préparation',\
             '2: En cours' or '3: Terminé'"),
     )
 
     class Meta:
-        ordering = ['event_status', 'event_date']
+        ordering = ['status', 'event_date']
         verbose_name_plural = _("Evènements")
 
     def __str__(self):
@@ -222,7 +230,7 @@ class Event(models.Model):
     def description(self):
         """return a short description of event"""
         return "Evènement commandé par {} - suivi par {} - {} ".format(
-            self.customer, self.support_customuser, self.event_status)
+            self.customer, self.support_customuser, self.status)
 
     @property
     def has_support(self):

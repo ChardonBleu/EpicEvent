@@ -55,4 +55,4 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ('datetime_created', 'customer__last_name',
                      'customer__first_name', 'event_date',
                      'support_customuser__username')
-    list_filter = ('event_status',)
+    list_filter = ('status',)

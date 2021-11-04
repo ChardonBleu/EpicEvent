@@ -18,14 +18,12 @@ class EventSerializer(serializers.ModelSerializer):
 
     support_customuser = serializers.SlugRelatedField(read_only=True,
                                                slug_field='username')
-    event_status = serializers.SlugRelatedField(read_only=True,
-                                               slug_field='status')
 
     class Meta:
         model = Event
         fields = ['id', 'datetime_created', 'datetime_updated', 'attendees',
                   'event_date', 'notes', 'customer', 'support_customuser',
-                  'event_status']    
+                  'status']    
 
 
 class CustomerListSerializer(serializers.ModelSerializer):

@@ -146,25 +146,25 @@ def contract1(db, vendeur1: CustomUser, customer1: Customer):
 
 
 @pytest.fixture
-def event_status1(db):
+def status1(db):
     return EventStatus.objects.create(status='En prépa')
 
 
 @pytest.fixture
 def event1(db, customer1: Customer, support1: CustomUser,
-           event_status1: EventStatus):
+           status1: EventStatus):
     return Event.objects.create(attendees="200",
                                 customer=customer1,
                                 support_customuser=support1,
-                                event_status=event_status1)
+                                status=status1)
 
 
 @pytest.fixture
 def event_without_support(db, customer1: Customer, support1: CustomUser,
-                          event_status1: EventStatus):
+                          status1: EventStatus):
     return Event.objects.create(attendees="200",
                                 customer=customer1,
-                                event_status=event_status1)
+                                status=status1)
 
 
 # ############################################################# #
@@ -187,8 +187,8 @@ def test_description_contract(contract1: Contract):
     assert contract1.description == "Contracté pour Lulu Lefetard"
 
 
-def test_event_status(event_status1: EventStatus):
-    assert str(event_status1) == "En prépa"
+def test_event_status(status1: EventStatus):
+    assert str(status1) == "En prépa"
 
 
 def test_event(event1: Event):
@@ -359,13 +359,13 @@ def test_get_events_list_for_support_group(client, logged_support1,
     assert response.status_code == 200
 
 def test_sale_user_can_post_new_event(client, logged_vendeur1,
-                                    customer1, event_status1):
+                                    customer1, status1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.post('/events/',
                            {'attendees': '160',
                             'event_date': "2022-02-12",
                             'notes': 'event test',
-                            'event_status': event_status1.id,
+                            'status': status1.id,
                             'customer': customer1.id}, format='json')
     assert response.status_code == 201
 
@@ -392,11 +392,11 @@ def test_support_user_can_view_event_detail(client, logged_support1, event1):
 
 def test_update_event_detail(client, logged_support1,
                                    event1, customer1,
-                                   event_status1):
+                                   status1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.put('/events/' + str(event1.id) +'/',
                            {'attendees': 200,
-                            'event_status': event_status1.id,
+                            'status': status1.id,
                             'customer': customer1.id}, format='json')
     assert response.status_code == 200
     

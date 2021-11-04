@@ -207,17 +207,19 @@ class Event(models.Model):
         help_text=_("The admin team asign a support person to each customer.\
             this supprt personn manage event oàrganisation with the customer"),
     )
-    event_status = models.ForeignKey(
+
+    status = models.ForeignKey(
         EventStatus,
         on_delete=models.CASCADE,
         verbose_name="status évènement",
-        related_name='events_eventstatus',
+        related_name='status_events',
+        default=1,
         help_text=_("Each event has a status: '1: En préparation',\
             '2: En cours' or '3: Terminé'"),
     )
 
     class Meta:
-        ordering = ['event_status', 'event_date']
+        ordering = ['status', 'event_date']
         verbose_name_plural = _("Evènements")
 
     def __str__(self):
@@ -228,7 +230,7 @@ class Event(models.Model):
     def description(self):
         """return a short description of event"""
         return "Evènement commandé par {} - suivi par {} - {} ".format(
-            self.customer, self.support_customuser, self.event_status)
+            self.customer, self.support_customuser, self.status)
 
     @property
     def has_support(self):

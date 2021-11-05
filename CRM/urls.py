@@ -6,12 +6,9 @@ from CRM.views import CustomerViewSet, ContractViewSet, EventViewSet
 
 customers_router = DefaultRouter()
 customers_router.register('customers', CustomerViewSet, basename='customer')
-
-simple_router = SimpleRouter()
-simple_router.register('contracts', ContractViewSet, basename='contract')
-simple_router.register('events', EventViewSet, basename='event')
+customers_router.register('contracts', ContractViewSet, basename='contract')
+customers_router.register('events', EventViewSet, basename='event')
 
 urlpatterns = [
     path('', include(customers_router.urls)),
-    path('', include(simple_router.urls)),
 ]

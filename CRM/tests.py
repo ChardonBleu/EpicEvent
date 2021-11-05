@@ -1,5 +1,4 @@
 import pytest
-import pytest_postgresql
 from django.contrib.auth.models import Group, Permission
 from rest_framework.test import APIClient
 
@@ -14,17 +13,20 @@ from accounts.models import CustomUser
 def client(db):
     return APIClient()
 
+
 @pytest.fixture
-def sale_group(db):    
+def sale_group(db):
     sale_group = Group(name='sale')
     sale_group.save()
     return Group.objects.get(name='sale')
 
+
 @pytest.fixture
-def support_group(db):    
+def support_group(db):
     support_group = Group(name='support')
     support_group.save()
     return Group.objects.get(name='support')
+
 
 @pytest.fixture
 def sale_permissions(db):
@@ -38,7 +40,6 @@ def sale_permissions(db):
 
     change_customer = Permission.objects.get(codename='change_customer')
     change_contract = Permission.objects.get(codename='change_contract')
-    change_event = Permission.objects.get(codename='change_event')
 
     sale_permissions = [
         view_customer,
@@ -51,6 +52,7 @@ def sale_permissions(db):
         change_contract,
     ]
     return sale_permissions
+
 
 @pytest.fixture
 def support_permissions(db):
@@ -68,55 +70,61 @@ def support_permissions(db):
     ]
     return support_permissions
 
+
 @pytest.fixture
 def vendeur1(db, sale_group, sale_permissions):
     CustomUser.objects.create_user(username="vendeur1",
-                                          password="vend1PassTest",
-                                          email="vend1@soleneidos.fr")
+                                   password="vend1PassTest",
+                                   email="vend1@soleneidos.fr")
     vendeur1 = CustomUser.objects.get(username="vendeur1")
     vendeur1.groups.add(sale_group)
     vendeur1.user_permissions.set(sale_permissions)
     return CustomUser.objects.get(username="vendeur1")
 
+
 @pytest.fixture
 def logged_vendeur1(client: APIClient, vendeur1):
     response = client.post('/login/',
                            {'username': 'vendeur1',
-                           'password': 'vend1PassTest'})
+                            'password': 'vend1PassTest'})
     return response.data['access']
+
 
 @pytest.fixture
 def vendeur2(db, sale_group, sale_permissions):
     CustomUser.objects.create_user(username="vendeur2",
-                                          password="vend2PassTest",
-                                          email="vend2@soleneidos.fr")
+                                   password="vend2PassTest",
+                                   email="vend2@soleneidos.fr")
     vendeur2 = CustomUser.objects.get(username="vendeur2")
     vendeur2.groups.add(sale_group)
     vendeur2.user_permissions.set(sale_permissions)
     return CustomUser.objects.get(username="vendeur2")
 
+
 @pytest.fixture
 def logged_vendeur2(client: APIClient, vendeur2):
     response = client.post('/login/',
                            {'username': 'vendeur2',
-                           'password': 'vend2PassTest'})
+                            'password': 'vend2PassTest'})
     return response.data['access']
+
 
 @pytest.fixture
 def support1(db, support_group, support_permissions):
     CustomUser.objects.create_user(username="support1",
-                                          password="sup1PassTest",
-                                          email="sup1@soleneidos.fr")
+                                   password="sup1PassTest",
+                                   email="sup1@soleneidos.fr")
     support1 = CustomUser.objects.get(username="support1")
     support1.groups.add(support_group)
     support1.user_permissions.set(support_permissions)
     return CustomUser.objects.get(username="support1")
 
+
 @pytest.fixture
 def logged_support1(client: APIClient, support1):
     response = client.post('/login/',
                            {'username': 'support1',
-                           'password': 'sup1PassTest'})
+                            'password': 'sup1PassTest'})
     return response.data['access']
 
 
@@ -127,6 +135,7 @@ def customer1(db, vendeur1: CustomUser):
                                    email="lulu@soleneidos.fr",
                                    mobile="123456789",
                                    sales_customuser=vendeur1)
+
 
 @pytest.fixture
 def customer2(db, vendeur2: CustomUser):
@@ -214,20 +223,22 @@ def test_event_has_not_support(event_without_support: Event):
 
 
 def test_get_customer_list_for_sale_group(client, logged_vendeur1,
-                                               customer1, customer2):
+                                          customer1, customer2):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.get('/customers/')
     assert response.status_code == 200
     assert b'Jojo' in response.content
     assert b'Lulu' in response.content
 
+
 def test_get_customer_list_for_support_group(client, logged_support1,
-                                                   customer1, customer2):
+                                             customer1, customer2):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.get('/customers/')
     assert response.status_code == 200
     assert b'Jojo' in response.content
-    assert b'Lulu' in response.content 
+    assert b'Lulu' in response.content
+
 
 def test_sale_user_can_post_new_costumer(client, logged_vendeur1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
@@ -238,6 +249,7 @@ def test_sale_user_can_post_new_costumer(client, logged_vendeur1):
                             'mobile': "123456789"}, format='json')
     assert response.status_code == 201
 
+
 def test_support_not_authorized_to_post_new_costumer(client, logged_support1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.post('/customers/',
@@ -246,16 +258,18 @@ def test_support_not_authorized_to_post_new_costumer(client, logged_support1):
                             'email': "toto@soleneidos.fr",
                             'mobile': "123456789"}, format='json')
     assert response.status_code == 403
-    
+
+
 def test_view_costumer_detail(client, logged_vendeur1, customer1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
-    
-    response = client.get('/customers/' + str(customer1.id) +'/')
+
+    response = client.get('/customers/' + str(customer1.id) + '/')
     assert response.status_code == 200
+
 
 def test_update_costumer_detail(client, logged_vendeur1, customer1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
-    response = client.put('/customers/' + str(customer1.id) +'/',
+    response = client.put('/customers/' + str(customer1.id) + '/',
                           {'first_name': "Lolo",
                            'last_name': "Lefetard",
                            'email': "lulumodif@soleneidos.fr",
@@ -264,10 +278,12 @@ def test_update_costumer_detail(client, logged_vendeur1, customer1):
                            'company_name': ' '}, format='json')
     assert response.status_code == 200
 
+
 def test_partial_update_costumer_detail(client, logged_vendeur1, customer1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
-    response = client.patch('/customers/' + str(customer1.id) +'/',
-                            {'email': "lulumodif@soleneidos.fr"}, format='json')
+    response = client.patch('/customers/' + str(customer1.id) + '/',
+                            {'email': "lulumodif@soleneidos.fr"},
+                            format='json')
     assert response.status_code == 200
 
 
@@ -283,19 +299,21 @@ def test_delete_costumer(client, logged_vendeur1, customer1):
 
 
 def test_get_contracts_list_for_sale_group(client, logged_vendeur1,
-                                             contract1):
+                                           contract1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.get('/contracts/')
     assert response.status_code == 200
 
+
 def test_get_contracts_list_for_support_group(client, logged_support1,
-                                             contract1):
+                                              contract1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.get('/contracts/')
     assert response.status_code == 200
 
+
 def test_sale_user_can_post_new_contract(client, logged_vendeur1,
-                                              customer1):
+                                         customer1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.post('/contracts/',
                            {'amount': '1000.50',
@@ -303,9 +321,10 @@ def test_sale_user_can_post_new_contract(client, logged_vendeur1,
                             'customer': customer1.id}, format='json')
     assert response.status_code == 201
 
+
 def test_support_not_authorized_to_post_new_contract(client,
-                                                    logged_support1,
-                                                    customer1):
+                                                     logged_support1,
+                                                     customer1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.post('/contracts/',
                            {'status_sign': False,
@@ -314,30 +333,34 @@ def test_support_not_authorized_to_post_new_contract(client,
                             'customer': customer1.id}, format='json')
     assert response.status_code == 403
 
+
 def test_view_contract_detail(client, logged_vendeur1, contract1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
-    response = client.get('/contracts/' + str(contract1.id) +'/')
+    response = client.get('/contracts/' + str(contract1.id) + '/')
     assert response.status_code == 200
 
+
 def test_update_contract_detail(client, logged_vendeur1,
-                                   contract1, customer1):
+                                contract1, customer1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
-    response = client.put('/contracts/' + str(contract1.id) +'/',
-                           {'status_sign': True,
-                            'amount': '10250.50',
-                            'payment_due': "2022-01-20",
-                            'customer': customer1.id}, format='json')
+    response = client.put('/contracts/' + str(contract1.id) + '/',
+                          {'status_sign': True,
+                           'amount': '10250.50',
+                           'payment_due': "2022-01-20",
+                           'customer': customer1.id}, format='json')
     assert response.status_code == 200
+
 
 def test_partial_update_contract_detail(client, logged_vendeur1, contract1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
-    response = client.patch('/contracts/' + str(contract1.id) +'/',
-                            {'status_sign': True,}, format='json')
+    response = client.patch('/contracts/' + str(contract1.id) + '/',
+                            {'status_sign': True}, format='json')
     assert response.status_code == 200
+
 
 def test_CANT_delete_contract(client, logged_vendeur1, contract1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
-    response = client.delete('/contracts/' + str(contract1.id) +'/')
+    response = client.delete('/contracts/' + str(contract1.id) + '/')
     assert response.status_code == 403
 
 
@@ -347,19 +370,21 @@ def test_CANT_delete_contract(client, logged_vendeur1, contract1):
 
 
 def test_get_events_list_for_sale_group(client, logged_vendeur1,
-                                             event1):
+                                        event1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.get('/events/')
     assert response.status_code == 200
 
+
 def test_get_events_list_for_support_group(client, logged_support1,
-                                             event1):
+                                           event1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.get('/events/')
     assert response.status_code == 200
 
+
 def test_sale_user_can_post_new_event(client, logged_vendeur1,
-                                    customer1, status1):
+                                      customer1, status1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
     response = client.post('/events/',
                            {'attendees': '160',
@@ -369,9 +394,10 @@ def test_sale_user_can_post_new_event(client, logged_vendeur1,
                             'customer': customer1.id}, format='json')
     assert response.status_code == 201
 
+
 def test_support_not_authorized_to_post_new_event(client,
-                                                    logged_support1,
-                                                    customer1):
+                                                  logged_support1,
+                                                  customer1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.post('/events/',
                            {'attendees': '160',
@@ -380,34 +406,45 @@ def test_support_not_authorized_to_post_new_event(client,
                             'customer': customer1.id}, format='json')
     assert response.status_code == 403
 
+
 def test_sale_user_can_view_event_detail(client, logged_vendeur1, event1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
-    response = client.get('/events/' + str(event1.id) +'/')
+    response = client.get('/events/' + str(event1.id) + '/')
     assert response.status_code == 200
+
 
 def test_support_user_can_view_event_detail(client, logged_support1, event1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
-    response = client.get('/events/' + str(event1.id) +'/')
+    response = client.get('/events/' + str(event1.id) + '/')
     assert response.status_code == 200
 
+
 def test_update_event_detail(client, logged_support1,
-                                   event1, customer1,
-                                   status1):
+                             event1, customer1,
+                             status1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
-    response = client.put('/events/' + str(event1.id) +'/',
-                           {'attendees': 200,
-                            'status': status1.id,
-                            'customer': customer1.id}, format='json')
+    response = client.put('/events/' + str(event1.id) + '/',
+                          {'attendees': 200,
+                           'status': status1.id,
+                           'customer': customer1.id}, format='json')
     assert response.status_code == 200
-    
+
 
 def test_partial_update_event_detail(client, logged_support1, event1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
-    response = client.patch('/events/' + str(event1.id) +'/',
+    response = client.patch('/events/' + str(event1.id) + '/',
                             {'notes': 'new notes'}, format='json')
     assert response.status_code == 200
 
+
 def test_CANT_delete_event(client, logged_support1, event1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
-    response = client.delete('/events/' + str(event1.id) +'/')
+    response = client.delete('/events/' + str(event1.id) + '/')
     assert response.status_code == 403
+
+
+def test_get_events_list_with_filtering(client, logged_vendeur1,
+                                        event1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
+    response = client.get('/events/?min_date=2021-12-31')
+    assert response.status_code == 200

@@ -100,7 +100,9 @@ Le serveur de développement se lance et son adresse s'affiche dans la console:
 Aller sur l'adresse http `http://127.0.0.1:8000/admin` pour utiliser la console admin en tant que superuser.
 Vous pouvez alors commencer à créer des utilisateurs des groupes de vente et de support.
 
-Consulter la documentation de l'API pour une utilisation sur Postman en tant qu'utilisateur des groupes vente ou support:
+Consulter la documentation de l'API pour une utilisation sur Postman en tant qu'utilisateur des groupes vente ou support:  
+
+    https://documenter.getpostman.com/view/17354834/UVC2Hpaj
 
 
 Lancer les tests

@@ -63,4 +63,4 @@ membre de l'équipe de gestion peuvent supprimer un client."
         if request.method in SAFE_METHODS:
             return can_view
         if request.method == 'PUT' or request.method == 'PATCH':
-            return can_change or is_in_charge
+            return can_change and is_in_charge

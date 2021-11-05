@@ -441,3 +441,10 @@ def test_CANT_delete_event(client, logged_support1, event1):
     client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_support1)
     response = client.delete('/events/' + str(event1.id) + '/')
     assert response.status_code == 403
+
+
+def test_get_events_list_with_filtering(client, logged_vendeur1,
+                                        event1):
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + logged_vendeur1)
+    response = client.get('/events/?min_date=2021-12-31')
+    assert response.status_code == 200

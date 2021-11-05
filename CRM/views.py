@@ -55,11 +55,12 @@ class ContractFilter(filters.FilterSet):
                                       lookup_expr='gte')
     max_date = filters.DateTimeFilter(field_name="datetime_created",
                                       lookup_expr='lte')
+
     class Meta:
         model = Contract
         fields = ['customer__last_name', 'customer__first_name',
-                 'customer__email', 'min_date', 'max_date',
-                 'min_amount', 'max_amount']
+                  'customer__email', 'min_date', 'max_date',
+                  'min_amount', 'max_amount']
 
 
 class ContractViewSet(viewsets.ModelViewSet):
@@ -89,6 +90,7 @@ class EventFilter(filters.FilterSet):
                                       lookup_expr='gte')
     max_date = filters.DateTimeFilter(field_name="event_date",
                                       lookup_expr='lte')
+
     class Meta:
         model = Event
         fields = ['customer__last_name', 'customer__first_name',

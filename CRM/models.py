@@ -1,4 +1,3 @@
-import uuid
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -8,11 +7,12 @@ from django.conf import settings
 class Customer(models.Model):
     """Represents customers, with or without signed contract.
     Each customer is related to a Custom User from Sale group.
-    User from sale group can create potentials clients, without sale_customuser.
-    User from admin group (superuser) attribute sale_costumer to client,
-    converting potential client in active client.customer
+    User from sale group can create potentials clients, without
+    sale_customuser. User from admin group (superuser) attribute
+    sale_costumer to client, converting potential client in active
+    client.customer
     """
-    
+
     first_name = models.CharField(
         "Prénom client",
         max_length=25,

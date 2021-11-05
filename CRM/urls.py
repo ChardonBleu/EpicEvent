@@ -15,4 +15,3 @@ urlpatterns = [
     path('', include(customers_router.urls)),
     path('', include(simple_router.urls)),
 ]
-

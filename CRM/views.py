@@ -28,15 +28,14 @@ class CustomerViewSet(viewsets.ModelViewSet):
     events lists.
 
     """
-    
-    permission_classes = [IsAuthenticated, CanManage]    
-      
+
+    permission_classes = [IsAuthenticated, CanManage]
+
     def get_serializer_class(self):
         if self.action == 'list':
             return CustomerListSerializer
         else:
             return CustomerDetailSerializer
-
 
     def get_queryset(self):
         if self.action == 'list' or self.action == 'retrieve':
@@ -49,13 +48,11 @@ class ContractViewSet(viewsets.ModelViewSet):
     """
     When user from sale group create a contract he does it for one of his
     clients. When creating contracts, the sale_customuser field is filled on
-    with logged user.    
-
+    with logged user.
     """
     serializer_class = ContractSerializer
     permission_classes = [IsAuthenticated, CanManage]
     queryset = Contract.objects.all()
-    
 
     def perform_create(self, serializer):
         """The user from sale group is automaticaly saved as the
@@ -66,11 +63,11 @@ class ContractViewSet(viewsets.ModelViewSet):
         """
         serializer.save(sales_customuser=self.request.user)
 
+
 class EventViewSet(viewsets.ModelViewSet):
     """
     When user from sale group create an event he does it for one of his
     clients. Then admin user gives a support user on event using admin panel.
-
     """
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticated, CanManage]

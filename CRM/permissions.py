@@ -20,10 +20,10 @@ membre de l'équipe de gestion peuvent supprimer un client."
             'CRM.add_customer') or request.user.has_perm(
                 'CRM.add_contract') or request.user.has_perm(
                     'CRM.add_event')
-        
+
         if request.method == 'POST':
             return can_add
-        else:            
+        else:
             return True
 
     def has_object_permission(self, request, view, obj):
@@ -37,13 +37,12 @@ membre de l'équipe de gestion peuvent supprimer un client."
         Returns:
             [bool] -- true if permission is ok
         """
-     
+
         if view.basename == 'event':
             is_in_charge = obj.support_customuser == request.user
         else:
             is_in_charge = obj.sales_customuser == request.user
-        
-        
+
         can_delete = request.user.has_perm(
             'CRM.delete_customer') or request.user.has_perm(
                 'CRM.delete_contract') or request.user.has_perm(
@@ -53,15 +52,15 @@ membre de l'équipe de gestion peuvent supprimer un client."
             'CRM.view_customer') or request.user.has_perm(
                 'CRM.view_contract') or request.user.has_perm(
                     'CRM.view_event')
-        
+
         can_change = request.user.has_perm(
             'CRM.change_customer') or request.user.has_perm(
                 'CRM.change_contract') or request.user.has_perm(
                     'CRM.change_event')
-        
+
         if request.method == 'DELETE':
-            return can_delete        
-        if request.method in SAFE_METHODS:            
+            return can_delete
+        if request.method in SAFE_METHODS:
             return can_view
         if request.method == 'PUT' or request.method == 'PATCH':
-            return  can_change or is_in_charge
+            return can_change or is_in_charge

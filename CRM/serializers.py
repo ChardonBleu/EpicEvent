@@ -4,9 +4,9 @@ from CRM.models import Customer, Contract, Event
 
 
 class ContractSerializer(serializers.ModelSerializer):
-    
+
     sales_customuser = serializers.SlugRelatedField(read_only=True,
-                                               slug_field='username')
+                                                    slug_field='username')
 
     class Meta:
         model = Contract
@@ -17,28 +17,28 @@ class ContractSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
 
     support_customuser = serializers.SlugRelatedField(read_only=True,
-                                               slug_field='username')
+                                                      slug_field='username')
 
     class Meta:
         model = Event
         fields = ['id', 'datetime_created', 'datetime_updated', 'attendees',
                   'event_date', 'notes', 'customer', 'support_customuser',
-                  'status']    
+                  'status']
 
 
 class CustomerListSerializer(serializers.ModelSerializer):
-      
+
     class Meta:
         model = Customer
         fields = ['id', 'first_name', 'last_name', 'email', 'phone',
                   'mobile', 'company_name', 'datetime_created',
                   'datetime_updated', 'sales_customuser']
 
+
 class CustomerDetailSerializer(serializers.ModelSerializer):
-    
+
     contracts_customer = ContractSerializer(many=True, read_only=True)
     events_customer = EventSerializer(many=True, read_only=True)
-    
 
     class Meta:
         model = Customer

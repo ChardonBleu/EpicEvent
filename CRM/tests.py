@@ -185,7 +185,7 @@ def test_str_customer(customer1: Customer):
 
 
 def test_full_name(customer1: Customer):
-    assert customer1.full_name == "Lulu LEFETARD"
+    assert customer1.full_name == "Lulu LEFETARD - suivi par vendeur1"
 
 
 def test_str_contact(contract1: Contract):
@@ -193,7 +193,8 @@ def test_str_contact(contract1: Contract):
 
 
 def test_description_contract(contract1: Contract):
-    assert contract1.description == "Contracté pour Lulu Lefetard"
+    assert contract1.description == "Contracté pour Lulu Lefetard - suivi par \
+vendeur1"
 
 
 def test_event_status(status1: EventStatus):
@@ -207,7 +208,7 @@ par support1"
 
 def test_description_event(event1: Event):
     assert event1.description == "Evènement commandé par Lulu Lefetard - \
-suivi par support1 - En prépa "
+En prépa "
 
 
 def test_event_has_support(event1: Event):

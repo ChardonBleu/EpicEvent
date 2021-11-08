@@ -78,7 +78,9 @@ class Customer(models.Model):
     @property
     def full_name(self):
         """return the custumer's full name"""
-        return "{} {} - suivi par {}".format(self.first_name, self.last_name.upper(), self.sales_customuser)
+        return "{} {} - suivi par {}".format(self.first_name,
+                                             self.last_name.upper(),
+                                             self.sales_customuser)
 
 
 class Contract(models.Model):
@@ -137,7 +139,8 @@ class Contract(models.Model):
     @property
     def description(self):
         """return a short dercription of contract"""
-        return "Contracté pour {} - suivi par {}".format(self.customer, self.sales_customuser)
+        return "Contracté pour {} - suivi par {}".format(self.customer,
+                                                         self.sales_customuser)
 
 
 class EventStatus(models.Model):

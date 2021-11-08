@@ -83,7 +83,6 @@ class ContractViewSet(viewsets.ModelViewSet):
             serializer  -- ProjectSerializer
         """
         serializer.save(sales_customuser=self.request.user)
-        
 
 
 class EventFilter(filters.FilterSet):

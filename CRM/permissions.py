@@ -16,7 +16,7 @@ membre de l'équipe de gestion peuvent supprimer un client."
         Returns:
             [bool] -- true if permission is ok
         """
-        
+
         can_add = request.user.has_perm(
             'CRM.add_customer') or request.user.has_perm(
                 'CRM.add_contract') or request.user.has_perm(

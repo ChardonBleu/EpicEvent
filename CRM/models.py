@@ -78,7 +78,7 @@ class Customer(models.Model):
     @property
     def full_name(self):
         """return the custumer's full name"""
-        return "{} {}".format(self.first_name, self.last_name.upper())
+        return "{} {} - suivi par {}".format(self.first_name, self.last_name.upper(), self.sales_customuser)
 
 
 class Contract(models.Model):
@@ -137,7 +137,7 @@ class Contract(models.Model):
     @property
     def description(self):
         """return a short dercription of contract"""
-        return "Contracté pour {}".format(self.customer)
+        return "Contracté pour {} - suivi par {}".format(self.customer, self.sales_customuser)
 
 
 class EventStatus(models.Model):
@@ -229,8 +229,8 @@ class Event(models.Model):
     @property
     def description(self):
         """return a short description of event"""
-        return "Evènement commandé par {} - suivi par {} - {} ".format(
-            self.customer, self.support_customuser, self.status)
+        return "Evènement commandé par {} - {} ".format(
+            self.customer, self.status)
 
     @property
     def has_support(self):

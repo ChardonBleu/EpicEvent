@@ -18,6 +18,7 @@ djangorestframework-simplejwt = "*"
 pytest-postgresql = "*"
 django-filter = "*"
 markdown = "*"
+drf-yasg = "*"
 
 [dev-packages]
 

@@ -1,6 +1,17 @@
 # EpicEvent
 
+![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/ChardonBleu/EpicEvent?color=green)
+![GitHub Pipenv locked dependency version](https://img.shields.io/github/pipenv/locked/dependency-version/ChardonBleu/EpicEvent/django)
+![GitHub Pipenv locked dependency version](https://img.shields.io/github/pipenv/locked/dependency-version/ChardonBleu/EpicEvent/djangorestframework)
+![GitHub Pipenv locked dependency version](https://img.shields.io/github/pipenv/locked/dependency-version/ChardonBleu/EpicEvent/sentry-sdk?color=yellow)  
+![GitHub repo size](https://img.shields.io/github/repo-size/ChardonBleu/EpicEvent?color=informational)
+![GitHub last commit](https://img.shields.io/github/last-commit/ChardonBleu/EpicEvent)
+
+
+
 ![Epicevent logo](https://user.oc-static.com/upload/2020/09/22/16007804386673_P10.png "Epicevent logo")
+
+
 
 Projet 12 de la formation DA python d'Openclassrooms.
 
@@ -104,6 +115,9 @@ Consulter la documentation de l'API pour une utilisation sur Postman en tant qu'
 
     https://documenter.getpostman.com/view/17354834/UVC2Hpaj
 
+Vous pouvez aussi tester l'API en utilisant le module swagger: `http://127.0.0.1:8000/swagger/`
+
+
 
 Lancer les tests
 ---
@@ -161,9 +175,11 @@ Le markdown guide:
 
     https://www.markdownguide.org/basic-syntax/
 
+La documentation swagger:
 
+    https://drf-yasg.readthedocs.io/en/stable/
 
-Remerciements
+Remerciements:
 ---
 
 Un très grand merci à ma mentor Sandrine Suire pour la transmission de son savoir, son accompagnement de qualité et sa patience à tout (ré)expliquer dans les moments de perdition.

@@ -17,6 +17,7 @@ jobs:
         python-version: 3.9
     - name: Generate coverage report
       run: |
+        pip install pytest-django
         pip install pytest
         pip install pytest-cov
         pytest

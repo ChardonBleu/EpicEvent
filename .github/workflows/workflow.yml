@@ -19,7 +19,7 @@ jobs:
       run: |
         pip install pytest
         pip install pytest-cov
-        pytest --nomigrations  --cov=. --cov-report=xml
+        pytest
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
       with:

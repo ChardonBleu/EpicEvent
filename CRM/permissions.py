@@ -27,7 +27,7 @@ membre de l'équipe de gestion peuvent supprimer un client."
         else:
             return True
 
-    def has_object_permission(self, request, view, obj) :
+    def has_object_permission(self, request, view, obj):
         """allow to retrieve, update or delete customer.
 
         Arguments:

@@ -4,7 +4,17 @@ from django.db import migrations
 
 
 def create_groups(apps, schema_migration):
+    """groups creation for sale and support users.
+    This migration will be executed before django auth permissions will be
+    created. So it's necessary to use get_or_create method to create
+    permissions we need before django has created default permissions.
+    The signal handler that creates the default permissions will never create
+    a duplicate permission, so it is safe to create it if it doesn't exist
+    already.
     
+    https://stackoverflow.com/questions/31539690/
+    django-migration-fails-with-fake-doesnotexist-permission-matching-query-do
+    """
     from django.apps.registry import Apps, apps as global_apps
     from django.contrib.contenttypes.management import create_contenttypes
     CRM_config = global_apps.get_app_config('CRM')

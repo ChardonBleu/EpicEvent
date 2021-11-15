@@ -17,7 +17,7 @@ Projet 12 de la formation DA python d'Openclassrooms.
 
 API de gestion et de suivi de clientèle. L'application doit permettre aux utilisateurs de créer des clients, d'ajouter des contrats et des évènements  pour ces clients.  
 L'authentification des utilisateurs se fait par token JWT.  
-Une équipe de gestion peut administrer les utilisateurs en passant par la console d'administration de Django.  l'équipe de gestion attribut les vendeurs aux clients et attribue les organisateurs aux évènements. Seuls les membres de l'équipe de gestion peuvent supprimer des clients, contrats ou évènements.  
+Une équipe de gestion peut administrer les utilisateurs en passant par la console d'administration de Django.  L'équipe de gestion attribut les vendeurs aux clients et attribue les organisateurs aux évènements. Seuls les membres de l'équipe de gestion peuvent supprimer des clients, contrats ou évènements.  
 Une équipe de vente peut ajouter de nouveaux clients au fur et à mesure de leur démarchage. Ils peuvent créer des contrats pour ces clients, puis créer des évènements. Ils peuvent mettre à jour les clients et contrats qu'ils ont en charge.
 Une équipe de support (organisation) gère les évènements. Ils peuvent mettre à jour les évènements et contrats qu'ils ont en charge.
 
@@ -31,19 +31,15 @@ Environnement virtuel
 https://packaging.python.org/tutorials/managing-dependencies/
 
 
-Installer pipenv de manière isolée grâce à pipx:
-```bash
-pip install pipx
-```
-puis
+Installer pipenv de manière isolée grâce à pip:
 
 ```bash
-pipx install pipenv
+pip install pipenv
 ```
 
 Créer un environnement virtuel:
 ```bash
-pipenv install
+pipenv install --dev
 ```
 
 Activer cet environnement virtuel:
@@ -62,13 +58,13 @@ Les modules sont contenus dans le fichier Pipfile.
 Base de donnée:
 ---
 
-Créer une base de donnée dans Postgresql avec un useradmin et remplacer dans settitngs.py la configuration avec votre propre base de donnée.  
+Créer une base de données dans Postgresql avec un useradmin et remplacer dans settitngs.py la configuration avec votre propre base de données.  
 ```bash 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': '<non-de_votre-bdd>',
-        'USER': '<nom_du_user_admin_de_votre_bdd',
+        'USER': '<nom_du_user_admin_de_votre_bdd>',
         'PASSWORD': '<mot_de_passe_de_votre_user_admin>',
         'HOST': 'localhost',
         'PORT': '5432',
@@ -80,11 +76,6 @@ Exécution
 ---
 Se mettre dans le répertoire racine.
 
-Créer un superuser pour pouvoir accéder à la console admin:
-```bash 
-python manage.py createsuperuser
-```
-
 Faire les migrations pour l'initialisation de la base de donnée:
 
 ```bash 
@@ -94,6 +85,11 @@ puis:
 
 ```bash 
 python manage.py migrate
+```
+
+Créer un superuser pour pouvoir accéder à la console admin:
+```bash 
+python manage.py createsuperuser
 ```
 
 Puis lancer le serveur:

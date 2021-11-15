@@ -4,20 +4,41 @@ from django.db import migrations
 
 
 def create_groups(apps, schema_migration):
+    """groups creation for sale and support users.
+    This migration will be executed before django auth permissions will be
+    created. So it's necessary to use get_or_create method to create
+    permissions we need before django has created default permissions.
+    The signal handler that creates the default permissions will never create
+    a duplicate permission, so it is safe to create it if it doesn't exist
+    already.
+    
+    https://stackoverflow.com/questions/31539690/
+    django-migration-fails-with-fake-doesnotexist-permission-matching-query-do
+    """
+    from django.apps.registry import Apps, apps as global_apps
+    from django.contrib.contenttypes.management import create_contenttypes
+    CRM_config = global_apps.get_app_config('CRM')
+    create_contenttypes(CRM_config)
+    
     Group = apps.get_model('auth', 'Group')
     Permission = apps.get_model('auth', 'Permission')
+    ContentType = apps.get_model('contenttypes', 'ContentType')
 
-    view_customer = Permission.objects.get(codename='view_customer')
-    view_contract = Permission.objects.get(codename='view_contract')
-    view_event = Permission.objects.get(codename='view_event')
+    customer_ct = ContentType.objects.get(model="customer")
+    contract_ct = ContentType.objects.get(model="contract")
+    event_ct = ContentType.objects.get(model="event")
 
-    add_customer = Permission.objects.get(codename='add_customer')
-    add_contract = Permission.objects.get(codename='add_contract')
-    add_event = Permission.objects.get(codename='add_event')
+    view_customer = Permission.objects.get_or_create(codename='view_customer', content_type=customer_ct)
+    view_contract = Permission.objects.get_or_create(codename='view_contract', content_type=contract_ct)
+    view_event = Permission.objects.get_or_create(codename='view_event', content_type=event_ct)
 
-    change_customer = Permission.objects.get(codename='change_customer')
-    change_contract = Permission.objects.get(codename='change_contract')
-    change_event = Permission.objects.get(codename='change_event')
+    add_customer = Permission.objects.get_or_create(codename='add_customer', content_type=customer_ct)
+    add_contract = Permission.objects.get_or_create(codename='add_contract', content_type=contract_ct)
+    add_event = Permission.objects.get_or_create(codename='add_event', content_type=event_ct)
+
+    change_customer = Permission.objects.get_or_create(codename='change_customer', content_type=customer_ct)
+    change_contract = Permission.objects.get_or_create(codename='change_contract', content_type=contract_ct)
+    change_event = Permission.objects.get_or_create(codename='change_event', content_type=event_ct)
 
     sale_permissions = [
         view_customer,

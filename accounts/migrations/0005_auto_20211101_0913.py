@@ -28,17 +28,17 @@ def create_groups(apps, schema_migration):
     contract_ct = ContentType.objects.get(model="contract")
     event_ct = ContentType.objects.get(model="event")
 
-    view_customer = Permission.objects.get_or_create(codename='view_customer', content_type=customer_ct)
-    view_contract = Permission.objects.get_or_create(codename='view_contract', content_type=contract_ct)
-    view_event = Permission.objects.get_or_create(codename='view_event', content_type=event_ct)
+    view_customer, _ = Permission.objects.get_or_create(codename='view_customer', content_type=customer_ct, name='Can view customer')
+    view_contract, _ = Permission.objects.get_or_create(codename='view_contract', content_type=contract_ct, name='Can view contract')
+    view_event, _ = Permission.objects.get_or_create(codename='view_event', content_type=event_ct, name='Can view event')
 
-    add_customer = Permission.objects.get_or_create(codename='add_customer', content_type=customer_ct)
-    add_contract = Permission.objects.get_or_create(codename='add_contract', content_type=contract_ct)
-    add_event = Permission.objects.get_or_create(codename='add_event', content_type=event_ct)
+    add_customer, _ = Permission.objects.get_or_create(codename='add_customer', content_type=customer_ct, name='Can add customer')
+    add_contract, _ = Permission.objects.get_or_create(codename='add_contract', content_type=contract_ct, name='Can add contract')
+    add_event, _ = Permission.objects.get_or_create(codename='add_event', content_type=event_ct, name='Can add event')
 
-    change_customer = Permission.objects.get_or_create(codename='change_customer', content_type=customer_ct)
-    change_contract = Permission.objects.get_or_create(codename='change_contract', content_type=contract_ct)
-    change_event = Permission.objects.get_or_create(codename='change_event', content_type=event_ct)
+    change_customer, _ = Permission.objects.get_or_create(codename='change_customer', content_type=customer_ct, name='Can change customer')
+    change_contract, _ = Permission.objects.get_or_create(codename='change_contract', content_type=contract_ct, name='Can change contract')
+    change_event, _ = Permission.objects.get_or_create(codename='change_event', content_type=event_ct, name='Can change event')
 
     sale_permissions = [
         view_customer,

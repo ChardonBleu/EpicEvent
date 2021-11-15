@@ -237,7 +237,7 @@ class Event(models.Model):
 
     @property
     def has_support(self):
-        """Return True is event has support
+        """Return True if event has support
         """
         if self.support_customuser is None:
             return False

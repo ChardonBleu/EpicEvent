@@ -11,6 +11,7 @@ def create_groups(apps, schema_migration):
     The signal handler that creates the default permissions will never create
     a duplicate permission, so it is safe to create it if it doesn't exist
     already.
+    
     https://stackoverflow.com/questions/31539690/
     django-migration-fails-with-fake-doesnotexist-permission-matching-query-do
     """

@@ -1,11 +1,11 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import rest_framework as filters
 
-from CRM.models import Customer, Contract, Event
+from CRM.models import Customer, Contract, Event, EventStatus
 from CRM.serializers import CustomerDetailSerializer, CustomerListSerializer
-from CRM.serializers import ContractSerializer, EventSerializer
+from CRM.serializers import ContractSerializer, EventSerializer, EventStatusSerializer
 
 from CRM.permissions import CanManage
 
@@ -107,3 +107,14 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     filter_backends = [DjangoFilterBackend]
     filterset_class = EventFilter
+
+
+class EventStatusViewSet(viewsets.ModelViewSet):
+    """
+    When user from sale group create an event he does it for one of his
+    clients. Then admin user gives a support user on event using admin panel.
+    """
+    serializer_class = EventStatusSerializer
+    queryset = EventStatus.objects.all()
+    permission_classes = [AllowAny]
+    http_method_names = ['get']

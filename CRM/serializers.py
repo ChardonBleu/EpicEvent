@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from CRM.models import Customer, Contract, Event
+from CRM.models import Customer, Contract, Event, EventStatus
 
 
 class ContractSerializer(serializers.ModelSerializer):
@@ -12,6 +12,13 @@ class ContractSerializer(serializers.ModelSerializer):
         model = Contract
         fields = ['id', 'datetime_created', 'datetime_updated', 'status_sign',
                   'amount', 'payment_due', 'customer', 'sales_customuser']
+
+
+class EventStatusSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = EventStatus
+        fields = ['id', 'status']
 
 
 class EventSerializer(serializers.ModelSerializer):

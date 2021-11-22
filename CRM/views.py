@@ -5,7 +5,8 @@ from django_filters import rest_framework as filters
 
 from CRM.models import Customer, Contract, Event, EventStatus
 from CRM.serializers import CustomerDetailSerializer, CustomerListSerializer
-from CRM.serializers import ContractSerializer, EventSerializer, EventStatusSerializer
+from CRM.serializers import ContractSerializer, EventSerializer
+from CRM.serializers import EventStatusSerializer
 
 from CRM.permissions import CanManage
 
@@ -111,8 +112,11 @@ class EventViewSet(viewsets.ModelViewSet):
 
 class EventStatusViewSet(viewsets.ModelViewSet):
     """
-    When user from sale group create an event he does it for one of his
-    clients. Then admin user gives a support user on event using admin panel.
+    Each event has a status.
+    1: En préparation
+    2: En cours
+    3: Terminé
+    Everyone can see event status list.
     """
     serializer_class = EventStatusSerializer
     queryset = EventStatus.objects.all()
